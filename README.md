@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/denniswatin90/analytics-cloud-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/denniswatin90/analytics-cloud-lab/actions/workflows/ci.yml)
 
-A hands-on project for learning **Python and Snowflake as a customer data engineer** at a personalization and experimentation vendor. You play the vendor: generate experience data, load it into Snowflake, analyse A/B tests, share client-specific data through secure data sharing, and automate a daily experiment report in Python.
+A hands-on project for a personalization and experimentation vendor. You play the vendor: generate experience data, load it into Snowflake, analyse A/B tests, share client-specific data through secure data sharing, and automate a daily experiment report in Python.
 
 > The schema is a simplified teaching model (sessions, page views, variant assignments, conversions). It is **not** Dew's actual data dictionary and contains only synthetic data.
 
@@ -19,26 +19,6 @@ A hands-on project for learning **Python and Snowflake as a customer data engine
 | Engineering | OOP (dataclasses, properties, context managers), logging, pytest, GitHub Actions |
 | Analytics | Conversion lift, z-test, confidence intervals, experiment pitfalls |
 
-## Quick start (no Snowflake needed)
-```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
-pytest -q
-python -m analytics_cloud_lab.generate_data --sessions 50000 --out data
-python -m analytics_cloud_lab.report --all --offline --data-dir data
-```
-
-## With Snowflake
-```bash
-pip install -e ".[dev,snowflake]"
-cp .env.example .env            # fill in account, user, key file
-# run sql/01_setup.sql, 02_tables.sql and the top of 03_load.sql in Snowsight
-python -m analytics_cloud_lab.loader --data-dir data
-# run sql/04_analysis.sql in Snowsight
-python -m analytics_cloud_lab.report --all --out reports
-python -m analytics_cloud_lab.snowpark_job
-```
-
 ## Repository layout
 ```
 ├── src/analytics_cloud_lab/
@@ -52,7 +32,6 @@ python -m analytics_cloud_lab.snowpark_job
 │   ├── snowpark_job.py      # same summary built with Snowpark DataFrames
 │   └── api_client.py        # REST client with retries + pagination
 ├── sql/                     # 01–08: setup → load → analysis → sharing → pipelines → cost
-├── tutorials/               # step-by-step guides 00–10
 ├── tests/                   # pytest suite (runs without Snowflake)
 ├── docs/client-onboarding-guide.md
 └── .github/workflows/ci.yml # lint + tests + offline smoke test
